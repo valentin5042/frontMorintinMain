@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "Pruebanavegacion",
+    "slug": "Pruebanavegacion",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash_morintin.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#BC1E32"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/splash_morintin.png",
+        "backgroundColor": "#BC1E32"
+      }
+    },
+    "web": {
+      "favicon": "./assets/splash_morintin.png"
+    }
+  }
+}
