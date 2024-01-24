@@ -1,23 +1,28 @@
 import { StatusBar } from 'expo-status-bar';
-import axios from 'axios';
 import React, { useState } from 'react';
 import { Searchbar } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
-const SearchBar = ( {MyComponent} ) => {
-  const [searchQuery, setSearchQuery] = React.useState('');
+
+
+const SearchBar = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+ 
   const onChangeSearch = query => setSearchQuery(query);
   return (
     <View style={styles.container}>
       <Searchbar
         style={styles.search}
-        placeholder="Search"
+        placeholder="Buscar Producto"
         onChangeText={onChangeSearch}
         value={searchQuery}
       />
+      
     </View>
   );
 };
+
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#BC1E32',
