@@ -1,38 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
+// SearchBar.js
+
 import React, { useState } from 'react';
 import { Searchbar } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 
+const SearchBar = ({ onSearchChange }) => {
+  const [busqueda, setBusqueda] = useState('');
 
+  const onChangeSearch = (query) => {
+    setBusqueda(query);
+    onSearchChange(query);
+  };
 
-const SearchBar = () => {
-  const [searchQuery, setSearchQuery] = useState('');
- 
-  const onChangeSearch = query => setSearchQuery(query);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Searchbar
         style={styles.search}
         placeholder="Buscar Producto"
         onChangeText={onChangeSearch}
-        value={searchQuery}
+        value={busqueda}
       />
-      
-    </View>
+    </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#BC1E32',
-    height: 130,
+    height: 230,
     justifyContent: 'flex-end',
-    padding: 15
   },
   search: {
     borderRadius: 10,
     marginHorizontal: 10,
-  }
+    marginBottom: 15
+  },
 });
+
 export default SearchBar;

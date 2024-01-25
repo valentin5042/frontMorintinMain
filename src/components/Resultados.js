@@ -1,11 +1,10 @@
 import React from 'react'
-import { Modal, SafeAreaView, Text, ScrollView, StyleSheet, View } from 'react-native'
+import { SafeAreaView, Text, ScrollView, StyleSheet, View } from 'react-native'
 import { Card } from 'react-native-paper';
 
 
 const Resultados = () => {
   return (
-    <Modal>
 
         <SafeAreaView>
 
@@ -49,7 +48,7 @@ const Resultados = () => {
 
 
         </SafeAreaView>
-    </Modal>
+
   )
 }
 
