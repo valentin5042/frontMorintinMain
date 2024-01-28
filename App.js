@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, SafeAreaView, Text } from 'react-native';
+import { View, StyleSheet, SafeAreaView, Text, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -12,40 +12,55 @@ import Resultados from './src/components/Resultados';
 
 const Tab = createBottomTabNavigator();
 
-const Inicio = ({ showDifferentView }) => {
-  const [loading, setLoading] = useState(false);
+const BuscandoProducto = () => (
+  <SafeAreaView style={styles.container}>
+    <Text style={styles.texto}>Buscando producto...</Text>
+  </SafeAreaView>
+);
+
+const Inicio = ({ route }) => {
   const [resultado, setResultado] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searching, setSearching] = useState(false);
 
   useEffect(() => {
-    if (showDifferentView !== undefined) {
-      if (showDifferentView) {
-        setLoading(true);
-        setTimeout(() => {
-          setResultado(showDifferentView);
-          setLoading(false);
-        }, 3000); // Ajusta el valor en milisegundos según tus necesidades
-      } else {
-        setResultado(false);
-        setLoading(false);
-      }
+    let delaySearch;
+
+    if (searchQuery) {
+      setSearching(true);
+
+      delaySearch = setTimeout(() => {
+        setResultado(true);
+        setSearching(false);
+      }, 3000);
+    } else {
+      setResultado(false);
+      setSearching(false);
     }
-  }, [showDifferentView]);
+
+    return () => clearTimeout(delaySearch);
+  }, [searchQuery]);
+
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
+  };
 
   return (
-    <View style={styles.container}>
-      <SearchBar onSearchChange={(query) => setResultado(!!query)} />
-      {loading ? (
-        <View style={styles.loadingContainer}>
-          <Text>Cargando...</Text>
+    <View
+      style={{ flex: 1 }}
+      contentContainerStyle={styles.container}
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      scrollEnabled={false}
+    >
+      <SearchBar onSearchChange={handleSearchChange} />
+      {searching ? (
+        <BuscandoProducto />
+      ) : resultado ? (
+        <View>
+          <Resultados />
         </View>
       ) : (
-        <View>
-          {resultado ? (
-            <Resultados />
-          ) : (
-            <Home />
-          )}
-        </View>
+        <Home />
       )}
     </View>
   );
@@ -70,47 +85,54 @@ const Perfil = () => (
 );
 
 const App = () => {
-  const [resultado, setResultado] = useState(false);
+  const tabBarHeight = Platform.OS === 'android' ? 59 : '10%';
+  const headerHeight = Platform.OS === 'android' ? 80 : 90;
 
   return (
     <NavigationContainer>
-      
       <Tab.Navigator
         initialRouteName="Inicio"
-        screenOptions={{
+        screenOptions={({ route }) => ({
           headerStyle: {
             backgroundColor: '#BC1E32',
+            height: headerHeight,
           },
           headerTintColor: '#fff',
           tabBarStyle: {
             backgroundColor: '#BC1E32',
-            padding: 3
+            height: tabBarHeight,
+            padding: 10,
           },
-        }}
+          headerTitleStyle: {
+            fontSize: 30,
+            fontWeight: '500',
+          },
+          headerTitleAlign: 'right',
+        })}
       >
         <Tab.Screen
           name="Inicio"
+          component={Inicio}
+          initialParams={{ showDifferentView: false }}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon name="home" color={color} size={size} style={{ color: '#fff' }} />
             ),
             tabBarLabel: ({ focused }) => (
-              <Text style={{ color: focused ? '#fff' : '#000' }}>Inicio</Text>
+              <Text style={{ color: focused ? '#fff' : '#000' }}>{focused ? 'Inicio' : 'Inicio'}</Text>
             ),
             headerShown: false,
           }}
-        >
-          {() => <Inicio showDifferentView={resultado} />}
-        </Tab.Screen>
+        />
         <Tab.Screen
-          name="Camara"
+          name="Escaner"
           component={Camara}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon name="camera-alt" color={color} size={size} style={{ color: '#fff' }} />
             ),
             tabBarLabel: ({ focused }) => (
-              <Text style={{ color: focused ? '#fff' : '#000' }}>Camara</Text>
+              <Text style={{ color: focused ? '#fff' : '#000' }}>{focused ? 'Camara' : 'Camara'}</Text>
             ),
             headerShown: true,
           }}
@@ -123,20 +145,20 @@ const App = () => {
               <Icon name="list" color={color} size={size} style={{ color: '#fff' }} />
             ),
             tabBarLabel: ({ focused }) => (
-              <Text style={{ color: focused ? '#fff' : '#000' }}>Lista</Text>
+              <Text style={{ color: focused ? '#fff' : '#000' }}>{focused ? 'Lista' : 'Lista'}</Text>
             ),
             headerShown: true,
           }}
         />
         <Tab.Screen
-          name="Perfil"
+          name="Usuario"
           component={Perfil}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon name="person" color={color} size={size} style={{ color: '#fff' }} />
             ),
             tabBarLabel: ({ focused }) => (
-              <Text style={{ color: focused ? '#fff' : '#000' }}>Perfil</Text>
+              <Text style={{ color: focused ? '#fff' : '#000' }}>{focused ? 'Perfil' : 'Perfil'}</Text>
             ),
             headerShown: true,
           }}
@@ -148,7 +170,7 @@ const App = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'center',
   },
   texto: {
@@ -156,11 +178,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
     color: '#BC1E32',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 

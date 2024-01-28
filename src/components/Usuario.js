@@ -78,6 +78,10 @@ const Usuario = () => {
 
 
 const styles = StyleSheet.create({
+    contenedor: {
+        flex: 1,
+        justifyContent: 'center'
+    },
     perfil: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',

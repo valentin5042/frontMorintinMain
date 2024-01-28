@@ -27,12 +27,12 @@ const SearchBar = ({ onSearchChange }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#BC1E32',
-    height: 230,
+    height: 120,
     justifyContent: 'flex-end',
   },
   search: {
     borderRadius: 10,
-    marginHorizontal: 10,
+    marginHorizontal: 15,
     marginBottom: 15
   },
 });

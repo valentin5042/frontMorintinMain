@@ -63,7 +63,7 @@ const Home = () => (
     </Card.Content>
   </Card>
 
-  <Card style={styles.cardBack}>
+  <Card style={[styles.cardBack, styles.cardFinal]}>
     <Card.Cover style={styles.img} source={require('./supermercados/smart.png')} />
     <Card.Content>
     <Card.Actions>
@@ -85,9 +85,12 @@ const styles = StyleSheet.create({
     cardBack: {
       backgroundColor: '#fff',
       marginHorizontal: 15,
-      marginTop: 10,
+      marginTop: 15,
       height: 330,
       borderRadius: 20,
+  },
+  cardFinal: {
+    marginBottom: 20
   },
     img:{
       marginHorizontal: 20,
