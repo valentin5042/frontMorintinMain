@@ -4,12 +4,14 @@ import { View,Text, Image, StyleSheet, ScrollView, Pressable, SafeAreaView, Moda
 
 import FormularioRegistro from './FormularioRegistro.js'
 import Login from './Login.js'
+import TerminosyCondiciones from './TerminosyCondiciones.js';
 
 
 const Usuario = () => {
 
-    const [formularioVisible, setFormularioVisible] = useState(false)
-    const [loginVisible, setLoginVisible] = useState(false)
+    const [ formularioVisible, setFormularioVisible ] = useState(false)
+    const [ loginVisible, setLoginVisible ] = useState(false)
+    const [ terminos, setTerminos ] = useState(false)
 
 
     return(
@@ -53,7 +55,13 @@ const Usuario = () => {
                 </View>
 
                 <View>
-                    <Pressable style={styles.btn}>
+                    <Pressable 
+                        style={styles.btn}
+                        onPress={() => {
+                            setTerminos(!terminos)
+                        }}
+                        
+                    >
                         <Text style={styles.btnTexto}>Términos y condiciones</Text>
                     </Pressable>
                 </View>
@@ -69,6 +77,10 @@ const Usuario = () => {
                     setLoginVisible={setLoginVisible}
                 />
                 
+                <TerminosyCondiciones 
+                    terminos={terminos}
+                    setTerminos={setTerminos}
+                />
 
             </View>
         </SafeAreaView>

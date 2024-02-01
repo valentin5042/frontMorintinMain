@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   contenedorBotones: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     marginVertical: 20
   },
   btnCancelar: {

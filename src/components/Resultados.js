@@ -10,8 +10,20 @@ const Resultados = () => {
 
             <ScrollView>
                 <Card style={styles.cardBack}>
+                    <View><Text style={styles.tituloCard}>Manzana</Text></View>
+                    <Card.Cover style={styles.img} source={require('./supermercados/manzana.png')} />
+                    <Card.Content>
+                    <View>
+                    <Text style={styles.textCard}>SAMS: 20</Text>
+                    <Text style={styles.textCard}>WALMART: 30</Text>
+                    <Text style={styles.textCard}>SORIANA: 25</Text>
+                    </View>
+                    </Card.Content>
+                </Card>
+
+                <Card style={styles.cardBack}>
                     <View><Text style={styles.tituloCard}>Producto</Text></View>
-                    <Card.Cover style={styles.img} source={require('./supermercados/walmart.png')} />
+                    <Card.Cover style={styles.img} source={require('./supermercados/manzana.png')} />
                     <Card.Content>
                     <View>
                     <Text style={styles.textCard}>SAMS: 200</Text>
@@ -21,21 +33,9 @@ const Resultados = () => {
                     </Card.Content>
                 </Card>
 
-                <Card style={styles.cardBack}>
+                <Card style={[styles.cardBack, styles.cardFin]}>
                     <View><Text style={styles.tituloCard}>Producto</Text></View>
-                    <Card.Cover style={styles.img} source={require('./supermercados/soriana.png')} />
-                    <Card.Content>
-                    <View>
-                    <Text style={styles.textCard}>SAMS: 200</Text>
-                    <Text style={styles.textCard}>WALMART: 300</Text>
-                    <Text style={styles.textCard}>SORIANA: 250</Text>
-                    </View>
-                    </Card.Content>
-                </Card>
-
-                <Card style={styles.cardBack}>
-                    <View><Text style={styles.tituloCard}>Producto</Text></View>
-                    <Card.Cover style={styles.img} source={require('./supermercados/costco.png')} />
+                    <Card.Cover style={styles.img} source={require('./supermercados/manzana.png')} />
                     <Card.Content>
                     <View>
                     <Text style={styles.textCard}>SAMS: 200</Text>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
       borderRadius: 20,
   },
     img:{
-      marginHorizontal: 50,
+      marginHorizontal: 30,
       marginVertical: 30
   },
     textCard: {
@@ -81,6 +81,9 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       marginTop: 20,
       textTransform: 'uppercase'
+    },
+    cardFin: {
+      marginBottom: 140
     }
   });
 

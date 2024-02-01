@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import SearchBar from './src/SearchBar';
 import Home from './src/components/Home';
+import Camara from './src/components/Camara';
 import Lista from './src/components/Lista';
 import Usuario from './src/components/Usuario';
 import Resultados from './src/components/Resultados';
@@ -72,9 +73,9 @@ const ListaProducto = () => (
   </SafeAreaView>
 );
 
-const Camara = () => (
+const Escaner = () => (
   <SafeAreaView style={styles.container}>
-    <Text style={styles.texto}>ESTAMOS EN LAS PRUEBAS AUN, ESTA VISTA NO FUNCIONA XD</Text>
+    <Camara />
   </SafeAreaView>
 );
 
@@ -126,7 +127,7 @@ const App = () => {
         />
         <Tab.Screen
           name="Escaner"
-          component={Camara}
+          component={Escaner}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon name="camera-alt" color={color} size={size} style={{ color: '#fff' }} />
@@ -170,7 +171,7 @@ const App = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
     justifyContent: 'center',
   },
   texto: {
