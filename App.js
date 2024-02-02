@@ -19,10 +19,13 @@ const BuscandoProducto = () => (
   </SafeAreaView>
 );
 
-const Inicio = ({ route }) => {
+const Inicio = () => {
   const [resultado, setResultado] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searching, setSearching] = useState(false);
+  const [busqueda, setBusqueda] = useState('');
+  const [productos, setProductos] = useState([]);
+  const [resultados, setResultados] = useState([]);
 
   useEffect(() => {
     let delaySearch;
@@ -53,12 +56,23 @@ const Inicio = ({ route }) => {
       resetScrollToCoords={{ x: 0, y: 0 }}
       scrollEnabled={false}
     >
-      <SearchBar onSearchChange={handleSearchChange} />
+      <SearchBar 
+        onSearchChange={handleSearchChange} 
+        busqueda={busqueda}
+        setBusqueda={setBusqueda}
+        productos={productos}
+        setProductos={setProductos}
+        resultados={resultados}
+        setResultados={setResultados}
+      />
       {searching ? (
         <BuscandoProducto />
       ) : resultado ? (
-        <View>
-          <Resultados />
+        <View style={styles.container}>
+          <Resultados 
+            resultados={resultados}
+            busqueda={busqueda}
+          />
         </View>
       ) : (
         <Home />

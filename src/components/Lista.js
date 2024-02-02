@@ -6,7 +6,7 @@ import { Card, Text } from 'react-native-paper';
 
 const Lista = () => (
 
-  <View>
+  <SafeAreaView style={styles.contenedor}>
     <ScrollView>
     <Card style={styles.cardBack}>
       <View style={styles.divTitulo}>
@@ -102,7 +102,7 @@ const Lista = () => (
     </ScrollView>
   </Card>
 
-  <Card style={styles.cardBack}>
+  <Card style={[styles.cardBack, styles.cardBackFin]}>
       <View style={styles.divTitulo}>
         <Text style={styles.tituloCard}>costco  <Text style={styles.suma}>$$$</Text>
       </Text>
@@ -121,22 +121,25 @@ const Lista = () => (
   </Card>
 
   </ScrollView>
- </View> 
+ </SafeAreaView> 
 
 );
 
 const styles = StyleSheet.create({
-    container: {
+    contenedor: {
       flex: 1,
       backgroundColor: '#fff'
     },
     divTitulo: {
       marginVertical: 20,
     },
+    cardBackFin: {
+      marginBottom: 15
+    },
     cardBack: {
       backgroundColor: '#fff',
       marginHorizontal: 15,
-      marginTop: 10,
+      marginTop: 15,
       height: 385,
       borderRadius: 20,
   },

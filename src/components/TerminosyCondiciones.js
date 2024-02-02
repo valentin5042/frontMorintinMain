@@ -104,15 +104,18 @@ const styles = StyleSheet.create({
     contenedorBtn: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginVertical: 20
+        marginVertical: 20,
     },
     btn: {
-        padding: 10,
+        padding: 8,
         borderRadius: 10,
-        backgroundColor: '#45BF00'
+        backgroundColor: '#45BF00',
+        flex: 1
     },
     btnRechazar: {
-        backgroundColor: '#B9ADAD'
+        backgroundColor: '#E6E3E3',
+        borderRadius: 10,
+        marginRight: 20
     },
     btnTexto: {
         textAlign: 'center',
