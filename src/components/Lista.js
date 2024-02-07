@@ -1,169 +1,89 @@
-import * as React from 'react';
-import axios from 'axios';
-import { View, StyleSheet, ScrollView, Pressable, SafeAreaView } from 'react-native';
-import { Card, Text } from 'react-native-paper';
+import React from 'react';
+import { connect } from 'react-redux';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { Card } from 'react-native-paper';
 
+const Lista = ({ productosSeleccionados }) => {
+  // Organiza los productos por supermercado y calcula la suma del precio
+  const productosPorSupermercado = productosSeleccionados.reduce((acc, producto) => {
+    const supermercado = producto.Supermercado || 'Sin Supermercado';
+    if (!acc[supermercado]) {
+      acc[supermercado] = {
+        productos: [],
+        sumaPrecio: 0,
+      };
+    }
+    acc[supermercado].productos.push(producto);
+    acc[supermercado].sumaPrecio += parseFloat(producto.Precio);
+    return acc;
+  }, {});
 
-const Lista = () => (
-
-  <SafeAreaView style={styles.contenedor}>
-    <ScrollView>
-    <Card style={styles.cardBack}>
-      <View style={styles.divTitulo}>
-        <Text style={styles.tituloCard}>WALMART  <Text style={styles.suma}>$$$</Text>
-      </Text>
-        
-        </View>
-
-    <ScrollView style={styles.producto}>
-      <Text style={styles.textCard}>Agua: <Text>200</Text></Text>
-      <Text style={styles.textCard}>Papel: <Text>300</Text></Text>
-      <Text style={styles.textCard}>Leche: <Text>250</Text></Text>
-      <Text style={styles.textCard}>Tocino: <Text>200</Text></Text>
-      <Text style={styles.textCard}>Croquetas: <Text>300</Text></Text>
-      <Text style={styles.textCard}>Jamon: <Text>250</Text></Text>
-      <Text style={styles.textCard}>Pavo: <Text>200</Text></Text>
-      <Text style={styles.textCard}>Detergente: <Text>300</Text></Text>
-      <Text style={styles.textCard}>Cobija: <Text>250</Text></Text>
-      <Text style={styles.textCard}>Jabon: <Text>200</Text></Text>
-      <Text style={styles.textCard}>Asador: <Text>300</Text></Text>
-      <Text style={styles.textCard}>Cubiertos: <Text>250</Text></Text>
-
+  return (
+    <ScrollView style={styles.listaContainer}>
+      {Object.entries(productosPorSupermercado).map(([supermercado, datosSupermercado]) => (
+        <Card key={supermercado} style={styles.cardBack}>
+          <View style={styles.contenedorTitulo}>
+            <Text style={styles.tituloCard}>{supermercado}</Text>
+            <Text style={styles.sumaPrecio}>Total: ${datosSupermercado.sumaPrecio.toFixed(2)}</Text>
+          </View>
+          <ScrollView>
+            {datosSupermercado.productos.map((producto, index) => (
+              <View key={index} style={styles.contenedorTexto}>
+                <Text style={styles.nombreProducto}>{producto.nombreProducto}</Text>
+                <Text style={styles.precioProducto}>${parseFloat(producto.Precio).toFixed(2)}</Text>
+              </View>
+            ))}
+          </ScrollView>
+        </Card>
+      ))}
     </ScrollView>
-
-  </Card>
-
-  <Card style={styles.cardBack}>
-      <View style={styles.divTitulo}>
-        <Text style={styles.tituloCard}>SORIANA  <Text style={styles.suma}>$$$</Text>
-      </Text>
-        
-        </View>
-
-    <ScrollView style={styles.producto}>
-    <Text style={styles.textCard}>Croquetas: <Text>300</Text></Text>
-      <Text style={styles.textCard}>Jamon: <Text>250</Text></Text>
-      <Text style={styles.textCard}>Pavo: <Text>200</Text></Text>
-      <Text style={styles.textCard}>Detergente: <Text>300</Text></Text>
-    </ScrollView>
-
-  </Card>
-
-  <Card style={styles.cardBack}>
-      <View style={styles.divTitulo}>
-        <Text style={styles.tituloCard}>SAMS  <Text style={styles.suma}>$$$</Text>
-      </Text>
-        
-        </View>
-
-    <ScrollView style={styles.producto}>
-    <Text style={styles.textCard}>Croquetas: <Text>300</Text></Text>
-      <Text style={styles.textCard}>Jamon: <Text>250</Text></Text>
-      <Text style={styles.textCard}>Pavo: <Text>200</Text></Text>
-      <Text style={styles.textCard}>Detergente: <Text>300</Text></Text>
-      <Text style={styles.textCard}>Cobija: <Text>250</Text></Text>
-      <Text style={styles.textCard}>Jabon: <Text>200</Text></Text>
-      <Text style={styles.textCard}>Asador: <Text>300</Text></Text>
-      <Text style={styles.textCard}>Cubiertos: <Text>250</Text></Text>
-
-    </ScrollView>
-  </Card>
-
-  <Card style={styles.cardBack}>
-      <View style={styles.divTitulo}>
-        <Text style={styles.tituloCard}>Alsuper  <Text style={styles.suma}>$$$</Text>
-      </Text>
-        
-        </View>
-
-    <ScrollView style={styles.producto}>
-      <Text style={styles.textCard}>Agua: <Text>200</Text></Text>
-      <Text style={styles.textCard}>Cubiertos: <Text>250</Text></Text>
-
-    </ScrollView>
-  </Card>
-
-  <Card style={styles.cardBack}>
-      <View style={styles.divTitulo}>
-        <Text style={styles.tituloCard}>s-mart  <Text style={styles.suma}>$$$</Text>
-      </Text>
-        
-        </View>
-
-    <ScrollView style={styles.producto}>
-      <Text style={styles.textCard}>Jamon: <Text>250</Text></Text>
-      <Text style={styles.textCard}>Pavo: <Text>200</Text></Text>
-      <Text style={styles.textCard}>Detergente: <Text>300</Text></Text>
-      <Text style={styles.textCard}>Cobija: <Text>250</Text></Text>
-      <Text style={styles.textCard}>Jabon: <Text>200</Text></Text>
-      <Text style={styles.textCard}>Asador: <Text>300</Text></Text>
-      <Text style={styles.textCard}>Cubiertos: <Text>250</Text></Text>
-
-    </ScrollView>
-  </Card>
-
-  <Card style={[styles.cardBack, styles.cardBackFin]}>
-      <View style={styles.divTitulo}>
-        <Text style={styles.tituloCard}>costco  <Text style={styles.suma}>$$$</Text>
-      </Text>
-        
-        </View>
-
-    <ScrollView style={styles.producto}>
-      <Text style={styles.textCard}>Agua: <Text>200</Text></Text>
-      <Text style={styles.textCard}>Papel: <Text>300</Text></Text>
-      <Text style={styles.textCard}>Leche: <Text>250</Text></Text>
-      <Text style={styles.textCard}>Asador: <Text>300</Text></Text>
-      <Text style={styles.textCard}>Cubiertos: <Text>250</Text></Text>
-
-    </ScrollView>
-
-  </Card>
-
-  </ScrollView>
- </SafeAreaView> 
-
-);
+  );
+};
 
 const styles = StyleSheet.create({
-    contenedor: {
-      flex: 1,
-      backgroundColor: '#fff'
-    },
-    divTitulo: {
-      marginVertical: 20,
-    },
-    cardBackFin: {
-      marginBottom: 15
-    },
-    cardBack: {
-      backgroundColor: '#fff',
-      marginHorizontal: 15,
-      marginTop: 15,
-      height: 385,
-      borderRadius: 20,
+  listaContainer: {
+    flex: 1,
+    backgroundColor: '#f0f0f0',
   },
-    textCard: {
-        fontSize: 20,
-        fontWeight: '800',
-        textTransform: 'uppercase',
-        marginBottom: 5
-    },
-    tituloCard: {
-      fontSize: 35,
-      fontWeight: '700',
-      textTransform: 'uppercase',
-      marginHorizontal: 15,
-      
-    },
-    suma: {
-      fontWeight: '400',
-      
-    },
-    producto: {
-      marginLeft: 15,
-      marginTop: 10
-    }
-  });
+  cardBack: {
+    backgroundColor: '#fff',
+    marginVertical: 10,
+    padding: 15,
+    borderRadius: 8,
+    marginHorizontal: 15
+  },
+  contenedorTitulo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  tituloCard: {
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  sumaPrecio: {
+    fontSize: 23,
+    fontWeight: '500',
+  },
+  contenedorTexto: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  nombreProducto: {
+    fontSize: 18,
+    fontWeight: '500',
+  },
+  precioProducto: {
+    fontSize: 16,
+    fontWeight: '400',
+  },
+});
 
-export default Lista;
+const mapStateToProps = (state) => ({
+  productosSeleccionados: state.productosSeleccionados,
+});
+
+export default connect(mapStateToProps)(Lista);

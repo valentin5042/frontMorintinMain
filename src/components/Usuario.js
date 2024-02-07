@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react'
-import { View,Text, Image, StyleSheet, ScrollView, Pressable, SafeAreaView, Modal } from 'react-native';
+import { View,Text, Image, StyleSheet, Pressable, SafeAreaView } from 'react-native';
 
 import FormularioRegistro from './FormularioRegistro.js'
 import Login from './Login.js'

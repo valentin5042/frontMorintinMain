@@ -3,7 +3,7 @@ import { Searchbar } from 'react-native-paper';
 import { StyleSheet, SafeAreaView, Platform } from 'react-native';
 import axios from 'axios';
 
-const SearchBar = ({ onSearchChange, busqueda, setBusqueda, productos, setProductos, resultados, setResultados }) => {
+const SearchBar = ({ onSearchChange, busqueda, setBusqueda, productos, setProductos, setResultados }) => {
   const apiUrl = "http://192.168.0.3:3000/api/productos";
 
   useEffect(() => {
@@ -12,7 +12,7 @@ const SearchBar = ({ onSearchChange, busqueda, setBusqueda, productos, setProduc
         const response = await axios.get(apiUrl);
         const productosConImagen = response.data.map(producto => ({
           ...producto,
-          imagenURL: producto.imagen // Asumiendo que tu columna se llama 'imagen'
+          imagenURL: producto.imagen //extracción de la url de la imagen
         }));
         setProductos(productosConImagen);
         setResultados(productosConImagen);

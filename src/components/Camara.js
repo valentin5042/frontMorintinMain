@@ -27,7 +27,7 @@ const Camara = () => {
       const photo = await camaraRef.current.takePictureAsync();
       setTomarFoto(false);
       console.log('Foto tomada:', photo);
-      // Puedes manejar la foto capturada según tus necesidades
+
 
       // Cierra automáticamente la cámara después de tomar la foto
       setCamara(false);

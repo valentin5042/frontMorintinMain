@@ -12,10 +12,7 @@ const Login = ({ loginVisible, setLoginVisible }) => {
       return;
     }
 
-    // Aquí puedes continuar con el proceso de inicio de sesión
-    // ...
-
-    // Luego, puedes cerrar el modal si el inicio de sesión fue exitoso
+    // cerrar el modal si el inicio de sesión fue exitoso
     setLoginVisible(!loginVisible);
   };
 
