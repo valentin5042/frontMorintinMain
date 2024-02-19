@@ -132,25 +132,28 @@ const Perfil = () => {
 
   const handleLogin = async (email, password) => {
     try {
-      console.log('Intentando iniciar sesión con:', { email, password });
       const response = await axios.post('http://192.168.0.3:3000/api/usuarios/login', { email, password });
-  
-      console.log('Respuesta del servidor:', response.data); // Agregar esta línea para ver la respuesta del servidor
-  
-      if (response.data && response.data.token !== undefined && response.data.token !== null && response.data.token !== '') {
-        // El token existe y no está vacío
+      if (response.data && response.data.token) {
         await AsyncStorage.setItem('token', response.data.token);
+        
+        // Después de guardar el token, realizar una solicitud GET para obtener el nombre de usuario
+        const userResponse = await axios.get('http://192.168.0.3:3000/api/usuarios/nombre', {
+          headers: {
+            Authorization: `Bearer ${response.data.token}` // Agregar el token en el encabezado de autorización
+          }
+        });
+        
+        // Guardar el nombre de usuario en AsyncStorage
+        await AsyncStorage.setItem('nombreUsuario', userResponse.data.nombreUsuario);
+        
         setIsLoggedIn(true);
-        console.log('Inicio de sesión exitoso. Usuario logueado.');
         setLoginVisible(false);
       } else {
-        console.log('Inicio de sesión fallido: credenciales incorrectas o token vacío');
         setErrorMessage('Correo y/o contraseña incorrectos');
         setShowError(true);
       }
     } catch (error) {
       console.error('Error al intentar iniciar sesión:', error);
-      console.error('Error en la solicitud:', error);
       setErrorMessage('Ocurrió un error al intentar iniciar sesión');
       setShowError(true);
     }

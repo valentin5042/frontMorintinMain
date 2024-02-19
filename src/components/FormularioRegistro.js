@@ -35,11 +35,9 @@ const Formulario = ({ formularioVisible, setFormularioVisible }) => {
       password: password 
     })
       .then(response => {
-        console.log('Respuesta del servidor:', response.data);
         setFormularioVisible(!formularioVisible);
       })
       .catch(error => {
-        console.error('Error al enviar solicitud:', error);
       });
   };
 
