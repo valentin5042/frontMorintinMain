@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
-import { View, StyleSheet, SafeAreaView, Text, Platform } from 'react-native';
+import { View, StyleSheet, SafeAreaView, Text, Platform, Alert } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import store from './src/store';
+import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import axios from 'axios';
+
 
 
 import SearchBar from './src/SearchBar';
@@ -13,7 +17,11 @@ import Home from './src/components/Home';
 import Camara from './src/components/Camara';
 import Lista from './src/components/Lista';
 import Usuario from './src/components/Usuario';
+import SesionIniciada from './src/components/SesionIniciada';
 import Resultados from './src/components/Resultados';
+import Login from './src/components/Login';
+import FormularioRegistro from './src/components/FormularioRegistro';
+import TerminosyCondiciones from './src/components/TerminosyCondiciones';
 
 const Tab = createBottomTabNavigator();
 
@@ -94,15 +102,148 @@ const Escaner = () => (
   </SafeAreaView>
 );
 
-const Perfil = () => (
-  <SafeAreaView style={styles.container}>
-    <Usuario />
-  </SafeAreaView>
-);
+
+const Perfil = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [formularioVisible, setFormularioVisible] = useState(false);
+  const [terminos, setTerminos] = useState(false);
+  const [loginVisible, setLoginVisible] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+          setIsLoggedIn(true);
+          console.log('Token encontrado. Usuario está logueado.');
+        } else {
+          console.log('Token no encontrado. Usuario no está logueado.');
+        }
+      } catch (error) {
+        console.error('Error al obtener el token:', error);
+      }
+    };
+
+    checkToken();
+  }, []); 
+
+
+  const handleLogin = async (email, password) => {
+    try {
+      console.log('Intentando iniciar sesión con:', { email, password });
+      const response = await axios.post('http://192.168.0.3:3000/api/usuarios/login', { email, password });
+  
+      console.log('Respuesta del servidor:', response.data); // Agregar esta línea para ver la respuesta del servidor
+  
+      if (response.data && response.data.token !== undefined && response.data.token !== null && response.data.token !== '') {
+        // El token existe y no está vacío
+        await AsyncStorage.setItem('token', response.data.token);
+        setIsLoggedIn(true);
+        console.log('Inicio de sesión exitoso. Usuario logueado.');
+        setLoginVisible(false);
+      } else {
+        console.log('Inicio de sesión fallido: credenciales incorrectas o token vacío');
+        setErrorMessage('Correo y/o contraseña incorrectos');
+        setShowError(true);
+      }
+    } catch (error) {
+      console.error('Error al intentar iniciar sesión:', error);
+      console.error('Error en la solicitud:', error);
+      setErrorMessage('Ocurrió un error al intentar iniciar sesión');
+      setShowError(true);
+    }
+  };
+  
+  
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+      setIsLoggedIn(false);
+      console.log('Logout exitoso'); // Agregamos este console.log para verificar si se ejecuta el logout correctamente
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
+ 
+
+
+  return (
+    <SafeAreaView style={styles.container}>
+      {isLoggedIn ? (
+        <SesionIniciada
+          terminos={terminos}
+          setTerminos={setTerminos}
+          onLogout={handleLogout}
+        />
+      ) : (
+        <Usuario
+          formularioVisible={formularioVisible}
+          setFormularioVisible={setFormularioVisible}
+          onLogin={handleLogin}
+          terminos={terminos}
+          setTerminos={setTerminos}
+          loginVisible={loginVisible}
+          setLoginVisible={setLoginVisible}
+          showError={showError}
+          errorMessage={errorMessage}
+        />
+      )}
+        <Login
+          loginVisible={loginVisible}
+          setLoginVisible={setLoginVisible}
+          handleLogin={handleLogin}
+        />
+        <FormularioRegistro
+          formularioVisible={formularioVisible}
+          setFormularioVisible={setFormularioVisible}
+        />
+
+        <TerminosyCondiciones
+            terminos={terminos}
+            setTerminos={setTerminos}
+        />
+    </SafeAreaView>
+  );
+};
+
 
 const App = () => {
   const tabBarHeight = Platform.OS === 'android' ? 59 : '10%';
   const headerHeight = Platform.OS === 'android' ? 80 : 90;
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para controlar si el usuario ha iniciado sesión
+
+  // Verificar el estado de inicio de sesión al cargar la aplicación
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      // Obtener el estado de inicio de sesión almacenado en AsyncStorage
+      const sessionToken = await AsyncStorage.getItem('sessionToken');
+      setIsLoggedIn(!!sessionToken); // Establecer isLoggedIn a true si hay un token de sesión, de lo contrario, establecerlo a false
+    };
+
+    checkLoginStatus();
+  }, []);
+
+  const limpiarLista = () => {
+    Alert.alert(
+      '¿Desea limpiar la lista de productos?',
+      'Esto removerá todos los productos agregados a la lista',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Sí',
+          onPress: () => store.dispatch({ type: 'LIMPIAR_LISTA' }),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
 
   return (
 
@@ -166,6 +307,11 @@ const App = () => {
                 <Text style={{ color: focused ? '#fff' : '#000' }}>{focused ? 'Lista' : 'Lista'}</Text>
               ),
               headerShown: true,
+              headerRight: () => (
+                <TouchableOpacity onPress={limpiarLista} style={{ marginRight: 15 }}>
+                  <Text style={{ color: '#fff' }}>Limpiar Lista</Text>
+                </TouchableOpacity>
+              )
             }}
           />
           <Tab.Screen

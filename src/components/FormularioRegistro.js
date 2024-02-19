@@ -1,105 +1,129 @@
-import React from 'react'
-import { View, Text, Modal, SafeAreaView, StyleSheet, TextInput, Pressable, Alert } from 'react-native'
+import React, {useState} from 'react'
+import { View, Text, Modal, SafeAreaView, StyleSheet, TextInput, Pressable, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import axios from 'axios'
 
 const Formulario = ({ formularioVisible, setFormularioVisible }) => {
-  const [nombre, setNombre] = React.useState('');
-  const [correo, setCorreo] = React.useState('');
-  const [confirmarCorreo, setConfirmarCorreo] = React.useState('');
-  const [contrasena, setContrasena] = React.useState('');
-  const [confirmarContrasena, setConfirmarContrasena] = React.useState('');
+  const [ nombre, setNombre ] = useState('');
+  const [ email, setEmail ] = useState('');
+  const [ confirmarEmail, setConfirmarEmail ] = useState('');
+  const [ password, setPassword ] = useState('');
+  const [ confirmarPassword, setConfirmarPassword ] = useState('');
 
   const forRegistro = () => {
     // Validación de campos
-    if (!nombre || !correo || !confirmarCorreo || !contrasena || !confirmarContrasena) {
+    if (!nombre || !email || !confirmarEmail || !password || !confirmarPassword) {
       Alert.alert('Error', 'Todos los campos son obligatorios');
       return;
     }
 
     // Validación de correo electrónico
-    if (correo !== confirmarCorreo) {
+    if (email !== confirmarEmail) {
       Alert.alert('Error', 'Los correos electrónicos no coinciden.');
       return;
     }
 
     // Validación de contraseña
-    if (contrasena !== confirmarContrasena) {
+    if (password !== confirmarPassword) {
       Alert.alert('Error', 'Las contraseñas no coinciden.');
       return;
     }
 
-    setFormularioVisible(!formularioVisible);
+    // Realizar la solicitud HTTP al servidor
+    axios.post('http://192.168.0.3:3000/api/usuarios', 
+    { nombre: nombre, 
+      email: email, 
+      password: password 
+    })
+      .then(response => {
+        console.log('Respuesta del servidor:', response.data);
+        setFormularioVisible(!formularioVisible);
+      })
+      .catch(error => {
+        console.error('Error al enviar solicitud:', error);
+      });
   };
+
+  const ocultarTeclado = () => {
+    Keyboard.dismiss()
+  }
+
 
   return (
     <Modal
       animationType='slide'
       visible={formularioVisible}
     >
-      <SafeAreaView style={styles.contenido}>
-        <View style={styles.campoTitulo}>
-          <Text style={styles.titulo}>Registro Usuario</Text>
-        </View>
+      <TouchableWithoutFeedback onPress={() => ocultarTeclado()}>
+        <SafeAreaView style={styles.contenido}>
+          <View style={styles.campoTitulo}>
+            <Text style={styles.titulo}>Registro Usuario</Text>
+          </View>
 
-        <View style={styles.campo}>
-          <TextInput
-            style={styles.input}
-            placeholder='Ingresa tu nombre'
-            placeholderTextColor={'#666'}
-            onChangeText={setNombre}
-          />
-        </View>
+          <View style={styles.campo}>
+            <TextInput
+              style={styles.input}
+              placeholder='Ingresa tu nombre'
+              placeholderTextColor={'#666'}
+              onChangeText={setNombre}
+            />
+          </View>
 
-        <View style={styles.campo}>
-          <TextInput
-            style={styles.input}
-            placeholder='Ingresa tu correo'
-            placeholderTextColor={'#666'}
-            onChangeText={setCorreo}
-          />
-        </View>
+          <View style={styles.campo}>
+            <TextInput
+              style={styles.input}
+              placeholder='Ingresa tu correo'
+              autoCapitalize='none'
+              placeholderTextColor={'#666'}
+              onChangeText={setEmail}
+            />
+          </View>
 
-        <View style={styles.campo}>
-          <TextInput
-            style={styles.input}
-            placeholder='Confirma tu correo'
-            placeholderTextColor={'#666'}
-            onChangeText={setConfirmarCorreo}
-          />
-        </View>
+          <View style={styles.campo}>
+            <TextInput
+              style={styles.input}
+              placeholder='Confirma tu correo'
+              autoCapitalize='none'
+              placeholderTextColor={'#666'}
+              onChangeText={setConfirmarEmail}
+            />
+          </View>
 
-        <View style={styles.campo}>
-          <TextInput
-            style={styles.input}
-            placeholder='Ingresa tu contraseña'
-            placeholderTextColor={'#666'}
-            onChangeText={setContrasena}
-            secureTextEntry
-          />
-        </View>
+          <View style={styles.campo}>
+            <TextInput
+              style={styles.input}
+              placeholder='Ingresa tu contraseña'
+              autoCapitalize='none'
+              placeholderTextColor={'#666'}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+          </View>
 
-        <View style={styles.campo}>
-          <TextInput
-            style={styles.input}
-            placeholder='Confirma tu contraseña'
-            placeholderTextColor={'#666'}
-            onChangeText={setConfirmarContrasena}
-            secureTextEntry
-          />
-        </View>
+          <View style={styles.campo}>
+            <TextInput
+              style={styles.input}
+              placeholder='Confirma tu contraseña'
+              autoCapitalize='none'
+              placeholderTextColor={'#666'}
+              onChangeText={setConfirmarPassword}
+              secureTextEntry
+            />
+          </View>
 
-        <View style={styles.contenedorBotones}>
-          <Pressable
-            style={[styles.btnCancelar, styles.btn]}
-            onPress={() => setFormularioVisible(!formularioVisible)}
-          >
-            <Text style={styles.btnTexto}>Cancelar</Text>
-          </Pressable>
+          <View style={styles.contenedorBotones}>
+            <Pressable
+              style={[styles.btnCancelar, styles.btn]}
+              onPress={() => setFormularioVisible(!formularioVisible)}
+            >
+              <Text style={styles.btnTexto}>Cancelar</Text>
+            </Pressable>
 
-          <Pressable style={[styles.btnRegistrar, styles.btn]} onPress={forRegistro}>
-            <Text style={[styles.btnTexto, styles.btnRegistrarTexto]}>Registrar</Text>
-          </Pressable>
-        </View>
-      </SafeAreaView>
+            <Pressable style={[styles.btnRegistrar, styles.btn]} onPress={forRegistro}>
+              <Text style={[styles.btnTexto, styles.btnRegistrarTexto]}>Registrar</Text>
+            </Pressable>
+          </View>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };

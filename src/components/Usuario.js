@@ -1,98 +1,51 @@
 import * as React from 'react';
-import { useState } from 'react'
-import { View,Text, Image, StyleSheet, Pressable, SafeAreaView } from 'react-native';
-
-import FormularioRegistro from './FormularioRegistro.js'
-import Login from './Login.js'
-import TerminosyCondiciones from './TerminosyCondiciones.js';
+import { View, Text, Image, StyleSheet, Pressable, SafeAreaView } from 'react-native';
 
 
-const Usuario = () => {
 
-    const [ formularioVisible, setFormularioVisible ] = useState(false)
-    const [ loginVisible, setLoginVisible ] = useState(false)
-    const [ terminos, setTerminos ] = useState(false)
-
-
-    return(
-        <SafeAreaView style={styles.contenedor}>
-
+const Usuario = ({ formularioVisible, setFormularioVisible, loginVisible, setLoginVisible, terminos, setTerminos }) => {
+    return (
+        <SafeAreaView style={styles.container}>
             <View style={styles.perfil}>
-
-           
-                    <Image 
+                <Image
                     style={styles.imagen}
                     source={require('../../assets/morintin.png')}
-                    /> 
-             
-
-               
+                />
             </View>
-           
-            
             <View style={styles.btncontenedor}>
-                <View>
-                    <Pressable 
+                <Pressable
                     style={[styles.btn, styles.btnborde]}
                     onPress={() => {
                         setLoginVisible(!loginVisible)
                     }}
-                    >
-                        <Text style={styles.btnTexto}>Iniciar Sesión</Text>
-                    </Pressable>
-                </View>
-
-                <View>
-                    <Pressable 
+                >
+                    <Text style={styles.btnTexto}>Iniciar Sesión</Text>
+                </Pressable>
+                <Pressable
                     onPress={() => {
                         setFormularioVisible(!formularioVisible)
                     }}
                     style={[styles.btn, styles.btnborde]}
-                    
-                    >
-                        <Text style={styles.btnTexto}>Registrar usuario nuevo</Text>
-                    </Pressable>
-                </View>
-
-                <View>
-                    <Pressable 
-                        style={styles.btn}
-                        onPress={() => {
-                            setTerminos(!terminos)
-                        }}
-                        
-                    >
-                        <Text style={styles.btnTexto}>Términos y condiciones</Text>
-                    </Pressable>
-                </View>
-
-            
-                <FormularioRegistro 
-                    formularioVisible={formularioVisible}
-                    setFormularioVisible={setFormularioVisible}
-                />
-    
-                <Login 
-                    loginVisible={loginVisible}
-                    setLoginVisible={setLoginVisible}
-                />
-                
-                <TerminosyCondiciones 
-                    terminos={terminos}
-                    setTerminos={setTerminos}
-                />
-
+                >
+                    <Text style={styles.btnTexto}>Registrar usuario nuevo</Text>
+                </Pressable>
+                <Pressable
+                    style={styles.btn}
+                    onPress={() => {
+                        setTerminos(!terminos)
+                    }}
+                >
+                    <Text style={styles.btnTexto}>Términos y condiciones</Text>
+                </Pressable>
             </View>
         </SafeAreaView>
     )
-
 }
 
-
 const styles = StyleSheet.create({
-    contenedor: {
+    container: {
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     perfil: {
         flexDirection: 'row',
@@ -100,12 +53,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginVertical: 30
     },
-    imagen:{
+    imagen: {
         width: 100,
         height: 100,
         borderRadius: 50,
         marginBottom: 10,
-  
     },
     usuarioTexto: {
         fontSize: 20,
@@ -114,7 +66,6 @@ const styles = StyleSheet.create({
     btncontenedor: {
         marginHorizontal: 40,
         marginTop: 70
-
     },
     btnborde: {
         borderBottomColor: '#D6D6D6',
@@ -124,12 +75,10 @@ const styles = StyleSheet.create({
     btn: {
         marginVertical: 15,
         padding: 5,
-        
     },
     btnTexto: {
         fontSize: 25,
         fontWeight: '600',
-
     }
 })
 

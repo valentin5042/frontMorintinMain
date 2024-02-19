@@ -27,7 +27,6 @@ const Resultados = ({ resultados, dispatch }) => {
             </View>
             <Card.Cover style={styles.img} source={{ uri: producto.imagen }} />
             <Card.Content>
-              <Text style={styles.textCard}>{producto.nombreProducto}</Text>
               <Text style={styles.textoInfo}>{`Precio: $${producto.Precio}`}</Text>
               <Text style={styles.textoInfo}>{`Supermercado: ${producto.Supermercado}`}</Text>
               <Pressable
@@ -39,17 +38,17 @@ const Resultados = ({ resultados, dispatch }) => {
             </Card.Content>
           </Card>
         ))}
-
-        {/* Componente de mensaje */}
-        {showMessage && (
-          <View style={styles.messageContainer}>
-            <Text style={styles.messageContent}>
-              <Icon name="check" size={30} color="#4CAF50" /> {/* Icono de palomita */}
-              <Text style={styles.messageText}>Producto agregado a la lista exitosamente</Text>
-            </Text>
-          </View>
-        )}
       </ScrollView>
+
+      {/* Componente de mensaje */}
+      {showMessage && (
+        <View style={styles.messageContainer}>
+          <Text style={styles.messageContent}>
+            <Icon name="check" size={30} color="#C0C0C0" /> {/* Icono de palomita */}
+            <Text style={styles.messageText}>Producto agregado a la lista exitosamente</Text>
+          </Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginHorizontal: 15,
     marginVertical: 10,
-    height: 480,
+    height: 450,
     borderRadius: 20
   },
   img: {
@@ -75,13 +74,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     textTransform: 'uppercase',
-  },
-  textCard: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: '600',
-    textTransform: 'uppercase',
-    marginBottom: 10,
   },
   textoInfo: {
     textAlign: 'center',
@@ -99,9 +91,8 @@ const styles = StyleSheet.create({
   btnAgregarTexto: {
     fontSize: 20,
     fontWeight: '600',
-    textTransform: 'none',
-    textAlign: 'center',
     textTransform: 'uppercase',
+    textAlign: 'center',
   },
   messageContainer: {
     position: 'absolute',
@@ -113,14 +104,14 @@ const styles = StyleSheet.create({
   messageContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F0F0F0',
+    backgroundColor: '#F3F3F3',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
   },
   messageText: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: '700',
     marginLeft: 10,
   },
 });
