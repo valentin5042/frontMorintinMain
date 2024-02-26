@@ -3,9 +3,11 @@ import { View, Text, StyleSheet, Pressable, SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import TerminosyCondiciones from './TerminosyCondiciones';
+import EditarUsuario from './EditarUsuario';
 
 const SesionIniciada = ({ terminos, setTerminos, onLogout }) => {
   const [nombreUsuario, setNombreUsuario] = useState('');
+  const [ editar, setEditar ] = useState(false)
 
   useEffect(() => {
     const obtenerNombreUsuario = async () => {
@@ -50,7 +52,12 @@ const SesionIniciada = ({ terminos, setTerminos, onLogout }) => {
         <Text style={styles.usuarioNombre}>{nombreUsuario}</Text>
       </View>
       <View style={styles.btnContenedor}>
-        <Pressable style={[styles.btn, styles.btnBorde]}>
+        <Pressable 
+          onPress={() => {
+            setEditar(!editar)
+          }}
+          style={[styles.btn, styles.btnBorde]}
+        >
           <Text style={styles.btnTexto}>Configuración</Text>
         </Pressable>
 
@@ -68,6 +75,11 @@ const SesionIniciada = ({ terminos, setTerminos, onLogout }) => {
         </Pressable>
 
         <TerminosyCondiciones terminos={terminos} setTerminos={setTerminos} />
+        
+        <EditarUsuario 
+          editar={editar}
+          setEditar={setEditar}
+        />
       </View>
     </SafeAreaView>
   );

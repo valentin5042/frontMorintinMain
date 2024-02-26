@@ -13,7 +13,7 @@ const Lista = ({ productosSeleccionados, dispatch }) => {
       };
     }
     acc[supermercado].productos.push(producto);
-    acc[supermercado].sumaPrecio += parseFloat(producto.Precio);
+    acc[supermercado].sumaPrecio += parseFloat(producto.precio);
     return acc;
   }, {});
 
@@ -53,7 +53,7 @@ const Lista = ({ productosSeleccionados, dispatch }) => {
                 {datosSupermercado.productos.map((producto, index) => (
                   <View key={index} style={styles.contenedorProducto}>
                     <Text style={styles.nombreProducto}>{producto.nombreProducto}</Text>
-                    <Text style={styles.precioProducto}>${parseFloat(producto.Precio).toFixed(2)}</Text>
+                    <Text style={styles.precioProducto}>${parseFloat(producto.precio).toFixed(2)}</Text>
                     <TouchableOpacity style={styles.eliminarProductoButton} onPress={() => eliminarProducto(producto)}>
                       <Text style={styles.eliminarProductoText}>Eliminar</Text>
                     </TouchableOpacity>

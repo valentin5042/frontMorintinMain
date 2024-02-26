@@ -27,7 +27,7 @@ const Resultados = ({ resultados, dispatch }) => {
             </View>
             <Card.Cover style={styles.img} source={{ uri: producto.imagen }} />
             <Card.Content>
-              <Text style={styles.textoInfo}>{`Precio: $${producto.Precio}`}</Text>
+              <Text style={styles.textoInfo}>{`Precio: $${producto.precio}`}</Text>
               <Text style={styles.textoInfo}>{`Supermercado: ${producto.Supermercado}`}</Text>
               <Pressable
                 style={styles.btnAgregar}
